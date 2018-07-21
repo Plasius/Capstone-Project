@@ -41,7 +41,12 @@ dependencies {
     //auth
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
 
     //db
     implementation 'com.google.firebase:firebase-database:16.0.1'
+
+    //material
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 }

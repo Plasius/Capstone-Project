@@ -22,6 +22,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+
+import pro.plasius.planarr.utils.NetworkMonitor;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,14 +37,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         // Set the dimensions of the sign-in button.
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(this);
-
+        
+        if(!NetworkMonitor.isNetworkAvailable(this))
+            Toast.makeText(this, "Please check network connection.", Toast.LENGTH_SHORT).show();
         //Auth
         mAuth = FirebaseAuth.getInstance();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -63,6 +68,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d("AUTH", "User Already signed in to Google. Signing in to Firebase.");
             firebaseAuthWithGoogle(account);
         }
+    }
+
+    public void onLoginClicked(View v){
+        TextView emailView = findViewById(R.id.login_et_email);
+        TextView passwordView = findViewById(R.id.login_et_password);
+        mAuth.signInWithEmailAndPassword(emailView.getText().toString(), passwordView.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG_AUTH, "signInWithEmail:success");
+                            launchApp();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG_AUTH, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    public void onRegisterClicked(View v){
+        TextView emailView = findViewById(R.id.login_et_email);
+        TextView passwordView = findViewById(R.id.login_et_password);
+        mAuth.createUserWithEmailAndPassword(emailView.getText().toString(), passwordView.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG_AUTH, "createUserWithEmail:success");
+                            launchApp();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG_AUTH, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Account creation failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -108,7 +157,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // Fail
                             Log.w("AUTH", "Signing in to Firebase failed.", task.getException());
-                            Toast.makeText(LoginActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -117,5 +165,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void launchApp(){
         Intent intent = new Intent(this, TaskListActivity.class);
         startActivity(intent);
+        finish();
     }
 }
