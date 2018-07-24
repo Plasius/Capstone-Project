@@ -1,8 +1,6 @@
 package pro.plasius.planarr.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.icu.text.DateFormat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +14,7 @@ import java.util.Calendar;
 import pro.plasius.planarr.R;
 import pro.plasius.planarr.TaskActivity;
 import pro.plasius.planarr.data.Task;
+import pro.plasius.planarr.utils.DateUtil;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private ArrayList<Task> mDataset;
@@ -52,8 +51,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mDataset.get(position).getTimestamp());
 
-        holder.mDateView.setText(Integer.toString(calendar.get(Calendar.YEAR))+"-"
-                +calendar.get(Calendar.MONTH)+"-"
+        holder.mDateView.setText(DateUtil.getMonthForInt(calendar.get(Calendar.MONTH))+" "
                 +calendar.get(Calendar.DAY_OF_MONTH));
 
         holder.mTitleView.setText(mDataset.get(position).getTitle());

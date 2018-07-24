@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_hor"
+        android:layout_marginLeft="@dimen/margin_hor"
+        tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/motto"
-        android:textSize="22sp"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/title_size"
+        android:layout_marginBottom="@dimen/margin_ver"
+        android:layout_marginTop="@dimen/margin_ver"
+        style="@style/AppTheme"
         />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_ver"/>
 
     <EditText
         android:id="@+id/login_et_email"
-        android:padding="16dp"
-        android:hint="Email"
+        android:hint="@string/login_email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:textSize="@dimen/text_size"
+        android:layout_marginLeft="@dimen/margin_hor"
+        android:layout_marginRight="@dimen/margin_hor"/>
 
     <EditText
         android:id="@+id/login_et_password"
-        android:padding="16dp"
-        android:hint="Password"
+        android:hint="@string/login_password"
         android:inputType="textPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:layout_marginLeft="@dimen/margin_hor"
+        android:layout_marginRight="@dimen/margin_hor"
+        android:layout_marginBottom="@dimen/margin_ver"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,20 +62,35 @@
 
 
         <Button
-            android:text="Register"
+            android:text="@string/login_register"
             android:onClick="onRegisterClicked"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight"
+            android:textSize="@dimen/text_size"
+            android:paddingRight="@dimen/padding_size"
+            android:paddingLeft="@dimen/padding_size"
+            android:layout_marginLeft="@dimen/padding_size"
+            android:layout_marginRight="@dimen/padding_size"
+            style="@style/AppTheme"/>
 
         <Button
-            android:text="Login"
+            android:text="@string/login_login"
             android:onClick="onLoginClicked"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight"
+            android:textSize="@dimen/text_size"
+            android:paddingLeft="@dimen/padding_size"
+            android:paddingRight="@dimen/padding_size"
+            android:layout_marginLeft="@dimen/padding_size"
+            android:layout_marginRight="@dimen/padding_size"
+            style="@style/AppTheme"/>
 
 
+    </LinearLayout>
     </LinearLayout>
 
 
 
-</LinearLayout>
+</ScrollView>

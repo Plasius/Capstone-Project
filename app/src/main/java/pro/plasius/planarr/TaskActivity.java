@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 
 import pro.plasius.planarr.data.Task;
+import pro.plasius.planarr.utils.DateUtil;
 
 public class TaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
@@ -55,8 +56,7 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
             calendar.setTimeInMillis(editTask.getTimestamp());
         }
 
-        ((Button)findViewById(R.id.task_bt_date)).setText(Integer.toString(calendar.get(Calendar.YEAR))+"-"
-                +calendar.get(Calendar.MONTH)+"-"
+        ((Button)findViewById(R.id.task_bt_date)).setText(DateUtil.getMonthForInt(calendar.get(Calendar.MONTH))+" "
                 +calendar.get(Calendar.DAY_OF_MONTH));
 
         mDatePickerDialog = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR),
@@ -99,10 +99,12 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Toast.makeText(this, "Picked date!", Toast.LENGTH_SHORT).show();
-        ((Button)findViewById(R.id.task_bt_date)).setText(Integer.toString(year)+"-"+month+"-"+day);
+        ((Button)findViewById(R.id.task_bt_date)).setText(DateUtil.getMonthForInt(month)+" "
+                + day);
 
         Calendar pickedCalendar = Calendar.getInstance();
         pickedCalendar.set(year, month, day);
@@ -111,7 +113,7 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
 
     private boolean publishTask(){
         String title = ((EditText)findViewById(R.id.task_ed_title)).getText().toString();
-        int priority = ((SeekBar)findViewById(R.id.task_sb_priority)).getProgress();
+        int priority = 4 - ((SeekBar)findViewById(R.id.task_sb_priority)).getProgress();
 
         if(title.equals("")){
             Toast.makeText(this, "Please name the task.", Toast.LENGTH_SHORT).show();

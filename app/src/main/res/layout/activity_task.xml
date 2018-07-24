@@ -5,72 +5,64 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginLeft="@dimen/task_margin_hor"
+    android:layout_marginRight="@dimen/task_margin_hor"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditText
         android:id="@+id/task_ed_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="I want to..."
-        android:layout_margin="8dp"
-        android:padding="8dp"
+        android:inputType="text"
+        android:hint="@string/task_suggestion"
         android:imeOptions="actionDone"
         android:singleLine="true"
+        android:textSize="@dimen/text_size"
+        android:layout_marginTop="@dimen/task_margin_ver"
         />
 
     <Button
         android:id="@+id/task_bt_date"
-        android:text="Pick Date"
-        android:onClick="datePickClicked"
-        android:layout_margin="8dp"
-        android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/task_margin_ver"
+        android:onClick="datePickClicked"
+        android:text="Pick Date"
+        android:textSize="@dimen/text_size" />
 
 
     <TextView
-        android:layout_margin="8dp"
-        android:padding="8dp"
         android:text="Priority:"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:layout_marginTop="@dimen/task_margin_ver"/>
 
     <SeekBar
         android:id="@+id/task_sb_priority"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="4"
-        android:layout_marginBottom="0dp"
-        android:paddingBottom="0dp"
-        android:layout_marginTop="8dp"
-        android:paddingTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
         />
 
     <RelativeLayout
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:layout_marginStart="8dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-        android:text="Less important"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"/>
+            android:text="Less important"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:layout_alignParentStart="true"/>
 
         <TextView
             android:text="More important"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            android:textSize="@dimen/text_size"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 

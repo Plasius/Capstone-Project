@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name = "margin_ver">8dp</dimen>
+    <dimen name = "margin_hor">32dp</dimen>
+    <dimen name = "padding_size">4dp</dimen>
+    <dimen name = "text_size">18sp</dimen>
+    <dimen name = "title_size">22sp</dimen>
+
+
+    <dimen name = "fab_height">6dp</dimen>
+    <dimen name = "fab_margin">12dp</dimen>
+
+    <dimen name = "list_padding_size">16dp</dimen>
+    <dimen name = "list_margin_ver">0dp</dimen>
+    <dimen name = "list_margin_hor">0dp</dimen>
+
+
+    <dimen name = "task_padding_size">16dp</dimen>
+    <dimen name = "task_margin_ver">16dp</dimen>
+    <dimen name = "task_margin_hor">16dp</dimen>
+
+
+</resources>
