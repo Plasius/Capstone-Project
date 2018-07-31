@@ -14,7 +14,7 @@ import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.google.firebase.database.FirebaseDatabase;
 
-import pro.plasius.planarr.sync.PlanarrJobService;
+import pro.plasius.planarr.sync.TaskJobService;
 
 public class NetworkSetup extends android.app.Application{
     private static final String TAG_JOB = "PlannarSyncJobTag";
@@ -50,7 +50,7 @@ public class NetworkSetup extends android.app.Application{
                 .setLifetime(Lifetime.FOREVER)
                 //.setLifetime(Lifetime.UNTIL_NEXT_BOOT)
                 //call this service when the criteria are met.
-                .setService(PlanarrJobService.class)
+                .setService(TaskJobService.class)
                 //unique id of the task
                 .setTag(TAG_JOB)
                 //don't overwrite an existing job with the same tag

@@ -93,12 +93,6 @@ public class TaskListActivity extends AppCompatActivity implements TaskAdapter.O
         refreshTasks();
     }
 
-    private void populateList(ArrayList<Task> tasks){
-        TaskAdapter adapter = new TaskAdapter(tasks, this);
-        mRvTasks.setAdapter(adapter);
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -126,6 +120,13 @@ public class TaskListActivity extends AppCompatActivity implements TaskAdapter.O
         }
     }
 
+
+    private void populateList(ArrayList<Task> tasks){
+        TaskAdapter adapter = new TaskAdapter(tasks, this);
+        mRvTasks.setAdapter(adapter);
+
+    }
+
     private void makeTask(Task task){
         if(task == null){
             //new task
@@ -147,13 +148,13 @@ public class TaskListActivity extends AppCompatActivity implements TaskAdapter.O
 
     }
 
-    //recyclerview
+    //RecyclerView - Click
     @Override
     public void onItemClick(Task task) {
         makeTask(task);
     }
 
-
+    //ReferenceManager
     @Override
     public void onDatabaseRead(ArrayList<Task> tasks) {
         populateList(tasks);

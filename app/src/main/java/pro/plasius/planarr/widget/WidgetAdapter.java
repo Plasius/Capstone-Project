@@ -16,22 +16,15 @@ import pro.plasius.planarr.utils.ReferenceManager;
 import pro.plasius.planarr.data.Task;
 import pro.plasius.planarr.utils.DateUtil;
 
-public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory, ReferenceManager.TaskListener {
+public class WidgetAdapter implements RemoteViewsService.RemoteViewsFactory, ReferenceManager.TaskListener {
     private Context mContext;
     private List<Task> mTasks;
     private CountDownLatch mCountDownLatch;
 
-    WidgetRemoteViewsFactory(Context context, Intent intent){
+    WidgetAdapter(Context context, Intent intent){
         mContext = context;
 
     }
-
-    private void refresh(){
-        DatabaseReference reference = ReferenceManager.getReference();
-        if(reference != null)
-            ReferenceManager.getTasksFromReference(this, reference);
-    }
-
     @Override
     public void onCreate() {
 
@@ -91,6 +84,15 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
         return true;
     }
 
+
+
+    private void refresh(){
+        DatabaseReference reference = ReferenceManager.getReference();
+        if(reference != null)
+            ReferenceManager.getTasksFromReference(this, reference);
+    }
+
+    //ReferenceManager
     @Override
     public void onDatabaseRead(ArrayList<Task> tasks) {
         this.mTasks = tasks;

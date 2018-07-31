@@ -33,10 +33,10 @@
                 android:resource="@xml/planarr_widget_info" />
         </receiver>
 
-        <service android:name=".widget.WidgetRemoteViewsService"
+        <service android:name=".widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"></service>
 
-        <service android:name=".sync.PlanarrJobService"
+        <service android:name=".sync.TaskJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" >
         </service>
     </application>

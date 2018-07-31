@@ -80,6 +80,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CODE_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d("AUTH", "Signing in to Firebase.");
+                mFirebaseAnalytics.logEvent("event_login_gmail", null);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG_AUTH, "Google sign in failed.", e);
+                Toast.makeText(this, "Sign in failed, please try again.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     public void onLoginClicked(View v){
         mAuth.signInWithEmailAndPassword(emailView.getText().toString(), passwordView.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -121,36 +144,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    @Override
-    public void onClick(View v){
-        Log.d(TAG_AUTH, "Signing in to Google.");
-        signIn();
-    }
 
     private void signIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, CODE_SIGN_IN);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CODE_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d("AUTH", "Signing in to Firebase.");
-                mFirebaseAnalytics.logEvent("event_login_gmail", null);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG_AUTH, "Google sign in failed.", e);
-                Toast.makeText(this, "Sign in failed, please try again.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -174,5 +173,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, TaskListActivity.class);
         startActivity(intent);
         finish();
+    }
+
+
+    //Button - Google Login
+    @Override
+    public void onClick(View v){
+        Log.d(TAG_AUTH, "Signing in to Google.");
+        signIn();
     }
 }

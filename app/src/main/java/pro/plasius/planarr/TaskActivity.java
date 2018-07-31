@@ -1,6 +1,5 @@
 package pro.plasius.planarr;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -39,8 +38,6 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
     @BindView(R.id.task_bt_date) Button mBtDate;
 
 
-
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +65,6 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
         millis = calendar.getTimeInMillis();
 
     }
-
-    public void datePickClicked(View v){
-        mDatePickerDialog.show();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,5 +135,12 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
 
 
     }
+
+
+    //Button - Pick Date
+    public void datePickClicked(View v){
+        mDatePickerDialog.show();
+    }
+
 
 }

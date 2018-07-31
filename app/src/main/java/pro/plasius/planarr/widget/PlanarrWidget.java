@@ -14,15 +14,6 @@ import pro.plasius.planarr.R;
  */
 public class PlanarrWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.planarr_widget);
-        Intent intent = new Intent(context, WidgetRemoteViewsService.class);
-        views.setRemoteAdapter(R.id.widgetListView, intent);
-
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -52,6 +43,17 @@ public class PlanarrWidget extends AppWidgetProvider {
             mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.widgetListView);
         }
         super.onReceive(context, intent);
+    }
+
+
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                int appWidgetId) {
+
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.planarr_widget);
+        Intent intent = new Intent(context, WidgetService.class);
+        views.setRemoteAdapter(R.id.widgetListView, intent);
+
+        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 }
 

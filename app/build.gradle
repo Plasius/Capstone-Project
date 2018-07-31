@@ -3,7 +3,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     signingConfigs {
-        debug {
+        release {
             keyAlias 'plannarkey'
             keyPassword 'azsxdcfv'
             storeFile file('../planarrstore.jks')
@@ -23,7 +23,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -52,6 +52,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //jobdispatcher
     implementation 'com.firebase:firebase-jobdispatcher:0.6.0'
-    //Analytics
     implementation 'com.google.firebase:firebase-core:16.0.1'
 }

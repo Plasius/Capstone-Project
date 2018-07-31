@@ -31,7 +31,6 @@ public class Task implements Parcelable, Comparable<Task>{
 
     public Task(){}
 
-
     public String getTaskId() {
         return taskId;
     }
@@ -65,7 +64,7 @@ public class Task implements Parcelable, Comparable<Task>{
     }
 
 
-
+    //Comparing
     @Override
     public int compareTo(@NonNull Task task) {
         Calendar c1 = Calendar.getInstance();
@@ -87,7 +86,7 @@ public class Task implements Parcelable, Comparable<Task>{
     }
 
 
-    //PARCEL
+    //Parcel
     @Override
     public int describeContents() {
         return 0;

@@ -4,7 +4,7 @@ import com.firebase.jobdispatcher.JobService;
 
 import pro.plasius.planarr.utils.ReferenceManager;
 
-public class PlanarrJobService extends JobService{
+public class TaskJobService extends JobService{
     @Override
     public boolean onStartJob(com.firebase.jobdispatcher.JobParameters job) {
         new Thread(new Runnable() {

@@ -1,6 +1,5 @@
 package pro.plasius.planarr.adapter;
 
-import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +27,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         this.listener = listener;
     }
 
-
-
-
     @Override
     public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
@@ -40,7 +36,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position

@@ -13,6 +13,7 @@
         android:textSize="22sp"
         android:text="@string/app_name"
         android:background="@color/colorPrimary"
+        android:padding="@dimen/widget_margin"
         android:fontFamily="monospace"
         />
 
