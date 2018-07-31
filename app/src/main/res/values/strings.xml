@@ -6,4 +6,6 @@
     <string name="login_login">Login</string>
     <string name="login_email">Email</string>
     <string name="task_suggestion">I want to...</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".utils.FirebaseSetup"
+        android:name=".utils.NetworkSetup"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,7 +21,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".TaskListActivity" />
-        <activity android:name=".TaskActivity"></activity>
+        <activity android:name=".TaskActivity" />
+
+        <receiver android:name=".widget.PlanarrWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/planarr_widget_info" />
+        </receiver>
+
+        <service android:name=".widget.WidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+
+        <service android:name=".sync.PlanarrJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" >
+        </service>
     </application>
 
 </manifest>

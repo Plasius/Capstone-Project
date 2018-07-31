@@ -12,7 +12,7 @@
 
     <dimen name = "list_padding_size">16dp</dimen>
     <dimen name = "list_margin_ver">0dp</dimen>
-    <dimen name = "list_margin_hor">128dp</dimen>
+    <dimen name = "list_margin_hor">64dp</dimen>
 
 
     <dimen name = "task_padding_size">16dp</dimen>

@@ -10,31 +10,33 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import pro.plasius.planarr.utils.ReferenceManager;
 import pro.plasius.planarr.data.Task;
 import pro.plasius.planarr.utils.DateUtil;
 
 public class TaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
     public static final String EXTRA_TASK = "extraTask";
-    public static final String EXTRA_DATE = "extraTaskDate";
 
     private Task editTask;
     DatePickerDialog mDatePickerDialog;
     private long millis = 0;
+
+    @BindView(R.id.task_ed_title) EditText mEdTitle;
+    @BindView(R.id.task_sb_priority) SeekBar mSbPriority;
+    @BindView(R.id.task_bt_date) Button mBtDate;
 
 
 
@@ -43,6 +45,7 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+        ButterKnife.bind(this);
 
         editTask = getIntent().getParcelableExtra(EXTRA_TASK);
 
@@ -50,13 +53,13 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
         Calendar calendar = Calendar.getInstance();
 
         if(editTask != null){
-            ((EditText)findViewById(R.id.task_ed_title)).setText(editTask.getTitle());
-            ((SeekBar)findViewById(R.id.task_sb_priority)).setProgress(editTask.getPriority());
+            mEdTitle.setText(editTask.getTitle());
+            mSbPriority.setProgress(editTask.getPriority());
 
             calendar.setTimeInMillis(editTask.getTimestamp());
         }
 
-        ((Button)findViewById(R.id.task_bt_date)).setText(DateUtil.getMonthForInt(calendar.get(Calendar.MONTH))+" "
+        mBtDate.setText(DateUtil.getMonthForInt(calendar.get(Calendar.MONTH))+" "
                 +calendar.get(Calendar.DAY_OF_MONTH));
 
         mDatePickerDialog = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR),
@@ -99,12 +102,13 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Toast.makeText(this, "Picked date!", Toast.LENGTH_SHORT).show();
-        ((Button)findViewById(R.id.task_bt_date)).setText(DateUtil.getMonthForInt(month)+" "
-                + day);
+        String sb = DateUtil.getMonthForInt(month) +
+                " " +
+                day;
+        mBtDate.setText(sb);
 
         Calendar pickedCalendar = Calendar.getInstance();
         pickedCalendar.set(year, month, day);
@@ -112,19 +116,21 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private boolean publishTask(){
-        String title = ((EditText)findViewById(R.id.task_ed_title)).getText().toString();
-        int priority = 4 - ((SeekBar)findViewById(R.id.task_sb_priority)).getProgress();
+        String title = mEdTitle.getText().toString();
+        int priority = 4 - mSbPriority.getProgress();
 
         if(title.equals("")){
             Toast.makeText(this, "Please name the task.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        FirebaseUser user;
-        DatabaseReference reference;
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        reference = database.getReference("users/" + user.getUid()+"/tasks");
+        Bundle bundle = new Bundle();
+        bundle.putString("task_title", title);
+        bundle.putLong("task_timestamp", millis);
+        bundle.putInt("task_priority", priority);
+        FirebaseAnalytics.getInstance(this).logEvent("event_task_added", bundle);
+
+        DatabaseReference reference = ReferenceManager.getReference();
 
         if(editTask != null){
             reference.child(editTask.getTaskId()).setValue(new Task(editTask.getTaskId(), title, priority, millis));
@@ -135,5 +141,7 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
 
         return true;
 
+
     }
+
 }

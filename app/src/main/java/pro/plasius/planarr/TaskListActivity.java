@@ -7,58 +7,56 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import pro.plasius.planarr.adapter.TaskAdapter;
+import pro.plasius.planarr.utils.ReferenceManager;
 import pro.plasius.planarr.data.Task;
 
 import static pro.plasius.planarr.TaskActivity.EXTRA_TASK;
 
-public class TaskListActivity extends AppCompatActivity implements TaskAdapter.OnItemClickListener {
+public class TaskListActivity extends AppCompatActivity implements TaskAdapter.OnItemClickListener, ReferenceManager.TaskListener {
     private static final String TAG_LISTER = "LISTER";
-    private FirebaseUser mUser;
     private DatabaseReference mReference;
-    private RecyclerView mRecyclerView;
-    ValueEventListener mValueEventListener;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+    @BindView(R.id.list_fab_add_task) FloatingActionButton mFabAddTask;
+    @BindView(R.id.list_rv_tasks) RecyclerView mRvTasks;
 
     @Override
     public void onResume() {
         super.onResume();
-        mReference.addListenerForSingleValueEvent(mValueEventListener);
+        refreshTasks();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mReference.removeEventListener(mValueEventListener);
+        refreshTasks();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
+        ButterKnife.bind(this);
 
-        mRecyclerView = findViewById(R.id.list_rv_tasks);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        mRvTasks.setHasFixedSize(true);
+        mRvTasks.setLayoutManager(new LinearLayoutManager(this));
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -71,67 +69,33 @@ public class TaskListActivity extends AppCompatActivity implements TaskAdapter.O
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 mReference.child((String)viewHolder.itemView.getTag()).removeValue();
 
+                //log event
+                mFirebaseAnalytics.logEvent("event_task_complete", null);
+
+
                 //refresh
-                mReference.removeEventListener(mValueEventListener);
-                mReference.addListenerForSingleValueEvent(mValueEventListener);
+                refreshTasks();
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        itemTouchHelper.attachToRecyclerView(mRvTasks);
 
 
-        FloatingActionButton fab = findViewById(R.id.list_fab_add_task);
-        fab.setOnClickListener(new View.OnClickListener(){
+        mFabAddTask.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 makeTask(null);
             }
         });
 
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mReference = database.getReference("users/" + mUser.getUid()+"/tasks");
-
-        mReference.keepSynced(true);
-
-        mValueEventListener= new ValueEventListener() {
-            // your event listener logic here
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null){
-                    ArrayList<Task> tasks = new ArrayList<Task>();
-                    for(DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()){
-                        tasks.add(singleDataSnapshot.getValue(Task.class));
-                    }
-
-                    //sort by time and priority
-                    Collections.sort(tasks, new Comparator<Task>() {
-                        @Override
-                        public int compare(Task task, Task t1) {
-                            return task.compareTo(t1);
-                        }
-                    });
-
-                    populateList(tasks);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG_LISTER, "Database error: " + database.toString());
-            }
-
-        };
-
-
+        refreshTasks();
     }
 
     private void populateList(ArrayList<Task> tasks){
         TaskAdapter adapter = new TaskAdapter(tasks, this);
-        mRecyclerView.setAdapter(adapter);
+        mRvTasks.setAdapter(adapter);
 
     }
 
@@ -176,9 +140,22 @@ public class TaskListActivity extends AppCompatActivity implements TaskAdapter.O
         }
     }
 
+    private void refreshTasks(){
+        mReference = ReferenceManager.getReference();
+        if(mReference != null)
+            ReferenceManager.getTasksFromReference(this, mReference);
+
+    }
+
     //recyclerview
     @Override
     public void onItemClick(Task task) {
         makeTask(task);
+    }
+
+
+    @Override
+    public void onDatabaseRead(ArrayList<Task> tasks) {
+        populateList(tasks);
     }
 }

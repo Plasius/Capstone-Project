@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import pro.plasius.planarr.R;
-import pro.plasius.planarr.TaskActivity;
 import pro.plasius.planarr.data.Task;
 import pro.plasius.planarr.utils.DateUtil;
 
@@ -51,8 +49,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mDataset.get(position).getTimestamp());
 
-        holder.mDateView.setText(DateUtil.getMonthForInt(calendar.get(Calendar.MONTH))+" "
-                +calendar.get(Calendar.DAY_OF_MONTH));
+        holder.mDateView.setText(DateUtil.formatTimestamp(mDataset.get(position).getTimestamp()));
 
         holder.mTitleView.setText(mDataset.get(position).getTitle());
         holder.itemView.setTag(mDataset.get(position).getTaskId());
