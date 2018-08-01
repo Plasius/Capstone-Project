@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "612873041310",
+    "firebase_url": "https://planarr-3204.firebaseio.com",
+    "project_id": "planarr-3204",
+    "storage_bucket": "planarr-3204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612873041310:android:dbcf1190df3ac382",
+        "android_client_info": {
+          "package_name": "pro.plasius.planarr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612873041310-pkenjg8kamuj9n453ql1ae89hj84cj0o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pro.plasius.planarr",
+            "certificate_hash": "f5d25ab04ddc635e303402eb6782e6004dd7327e"
+          }
+        },
+        {
+          "client_id": "612873041310-ek1auk2gp44d30rvnpekbcjiid216j4d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUZS33XGOVlla3Fm8ex_JyO7sobTQx30Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612873041310-ek1auk2gp44d30rvnpekbcjiid216j4d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

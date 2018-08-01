@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         if(!NetworkSetup.isNetworkAvailable(this))
-            Toast.makeText(this, "Please check network connection.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.check_internet, Toast.LENGTH_SHORT).show();
         //Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -98,12 +100,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG_AUTH, "Google sign in failed.", e);
-                Toast.makeText(this, "Sign in failed, please try again.", Toast.LENGTH_SHORT).show();
+                Log.w(TAG_AUTH, Integer.toString( e.getStatusCode()));
+                Toast.makeText(this, R.string.sign_in_failed, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+    private boolean checkIfValid(){
+        if(!emailView.getText().toString().equals("") && !passwordView.getText().toString().equals("")){
+            if(isValidEmail(emailView.getText().toString()))
+                return true;
+        }
+
+        Toast.makeText(this, R.string.please_enter_valid, Toast.LENGTH_SHORT).show();
+        return false;
+
+    }
+
     public void onLoginClicked(View v){
+        if(!checkIfValid())
+            return;
         mAuth.signInWithEmailAndPassword(emailView.getText().toString(), passwordView.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -116,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG_AUTH, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -125,6 +145,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void onRegisterClicked(View v){
+        if(!checkIfValid())
+            return;
         mAuth.createUserWithEmailAndPassword(emailView.getText().toString(), passwordView.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -137,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG_AUTH, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Account creation failed.",
+                            Toast.makeText(LoginActivity.this, R.string.account_create_fail,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

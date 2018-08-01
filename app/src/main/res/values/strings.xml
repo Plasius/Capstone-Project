@@ -14,5 +14,12 @@
     <string name="more_important">More important</string>
     <string name="loading">Loading</string>
     <string name="add_new">Add new</string>
+    <string name="add_new_task">Add new task</string>
     <string name="done">Done</string>
+    <string name="task_no_name">Please name the task.</string>
+    <string name="check_internet">Please check network connection.</string>
+    <string name="sign_in_failed">Sign in failed, please try again.</string>
+    <string name="auth_failed">Authentication failed.</string>
+    <string name="account_create_fail">Account creation failed.</string>
+    <string name="please_enter_valid">Please enter a valid email and password.</string>
 </resources>

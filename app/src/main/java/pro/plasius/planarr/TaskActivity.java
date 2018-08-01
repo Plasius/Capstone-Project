@@ -96,7 +96,6 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        Toast.makeText(this, "Picked date!", Toast.LENGTH_SHORT).show();
         String sb = DateUtil.getMonthForInt(month) +
                 " " +
                 day;
@@ -112,7 +111,7 @@ public class TaskActivity extends AppCompatActivity implements DatePickerDialog.
         int priority = 4 - mSbPriority.getProgress();
 
         if(title.equals("")){
-            Toast.makeText(this, "Please name the task.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.task_no_name, Toast.LENGTH_SHORT).show();
             return false;
         }
 

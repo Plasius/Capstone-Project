@@ -24,6 +24,7 @@
         android:elevation="@dimen/fab_height"
         android:src="@drawable/ic_add_black"
         app:fabSize="normal"
-        app:pressedTranslationZ="12dp" />
+        app:pressedTranslationZ="12dp"
+        android:contentDescription="@string/add_new_task"/>
 
 </FrameLayout>
