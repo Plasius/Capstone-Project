@@ -22,4 +22,5 @@
     <string name="auth_failed">Authentication failed.</string>
     <string name="account_create_fail">Account creation failed.</string>
     <string name="please_enter_valid">Please enter a valid email and password.</string>
+    <string name="sign_out">Sign out</string>
 </resources>
